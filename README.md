@@ -9,7 +9,8 @@
 
 | Service | Port / URL | Status | Description |
 |---|---|---|---|
-| **Frontend** | [http://localhost:5173](http://localhost:5173) | 🟢 Live | React 19, Vite 7, Tailwind 4 — Student & Admin Web Portal |
+| **Frontend (GitHub Pages)** | [https://007arnav007.github.io/CampusConnect/](https://007arnav007.github.io/CampusConnect/) | 🌐 Deployed | Public live frontend deployment on GitHub Pages |
+| **Frontend (Local)** | [http://localhost:5173](http://localhost:5173) | 🟢 Local | React 19, Vite 7, Tailwind 4 — Student & Admin Web Portal |
 | **Gateway** | `http://localhost:3001` | 🟢 Live | Node 22, Express, Socket.io — API aggregation & transport engine |
 | **Backend** | `http://localhost:8080` | 🟢 Live | Spring Boot 3.5, Java 24 — Relational store of record |
 | **PostgreSQL** | `127.0.0.1:5432` | 🟢 Live | PostgreSQL 18 running in WSL2 via transparent `pg_proxy` |
