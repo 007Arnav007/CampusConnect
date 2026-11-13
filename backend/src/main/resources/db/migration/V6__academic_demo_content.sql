@@ -1,0 +1,3 @@
+-- Demo rows are inserted by AcademicDemoBootstrap, which runs after AdminBootstrap
+-- (the first staff/admin account on a fresh database becomes the faculty owner).
+-- Flyway runs before all Spring ApplicationRunner instances.

@@ -1,0 +1,22 @@
+{
+  "config": {
+    "calib_streams": 80,
+    "n_seeds": 20,
+    "seeds": {
+      "calib": 200,
+      "test": 9000,
+      "train": 100
+    },
+    "targets": [
+      0.02,
+      0.05
+    ],
+    "train_streams": 240
+  },
+  "created_utc": "2026-11-08T04:27:13Z",
+  "elapsed_s": 59.9,
+  "numpy": "2.5.4",
+  "python": "3.12.3",
+  "scipy": "1.18.1",
+  "sklearn": "1.9.1"
+}

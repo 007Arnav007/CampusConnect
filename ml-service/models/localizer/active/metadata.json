@@ -1,0 +1,14 @@
+{
+  "name": "localizer",
+  "version": "bayes-1",
+  "status": "ACTIVE-DEMO",
+  "sha256": "ac3765a90d52ab8d3f5ec8d24ee4369f9fb801b7d8e5834ae2874b04e11c7d39",
+  "trainedOn": "synthetic generator netsim v2 (seeds 11/22/33)",
+  "sourceRun": "experiments/runs/E3/0b857f38c7901147-39cae1db",
+  "claims": "Only the numbers in the source run's results.json are supported; synthetic data, not validated on a real campus.",
+  "metricsAt20pctBlind": {
+    "L-F": 0.768,
+    "L-B1": 0.428
+  },
+  "mode": "trained-artifact"
+}

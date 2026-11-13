@@ -1,0 +1,49 @@
+server:
+  port: ${BACKEND_PORT:8080}
+
+spring:
+  config:
+    import:
+      - optional:file:./.env[.properties]
+      - optional:file:../.env[.properties]
+  application:
+    name: campusconnect-backend
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/campusconnect}
+    username: ${DATABASE_USERNAME:campusconnect}
+    password: ${DATABASE_PASSWORD:change-me}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  actuator:
+    endpoints:
+      web:
+        exposure:
+          include: health,info
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  health:
+    diskspace:
+      enabled: false
+
+security:
+  institutional-email-domains: ${INSTITUTIONAL_EMAIL_DOMAINS:vit.edu,vit.ac.in}
+  jwt:
+    secret: ${JWT_SECRET:}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  admin:
+    email: ${BOOTSTRAP_ADMIN_EMAIL:}
+    password: ${BOOTSTRAP_ADMIN_PASSWORD:}
+
+campusconnect:
+  internal-service-token: ${INTERNAL_SERVICE_TOKEN:}
+  ml-service-url: ${ML_SERVICE_URL:http://localhost:5100}
+  ml-request-timeout-ms: ${ML_REQUEST_TIMEOUT_MS:1200}
+  ml-enabled: ${ML_ENABLED:true}

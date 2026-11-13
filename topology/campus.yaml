@@ -1,0 +1,36 @@
+# Single source of truth for the campus network (C12). Builders: ml-service/src/netsim/topology.py.
+# Consumers generated from this file: the ML graph, the Visual Lab, and the SQL seed.
+# The legacy TS network-simulator uses its own hard-coded 7-node topology and does NOT read this file
+# (see docs/STATUS.md: replacement PARTIAL).
+version: 2
+name: demo-campus
+seed: 351
+core: CORE-01
+routers: [RTR-01, RTR-02]       # every distribution switch is dual-homed to both routers
+firewall: FW-01
+gateway: GW-01                  # upstream / WAN edge
+services: [DNS-01, DHCP-01, RADIUS-01]
+residual_impact:                # fraction of users still affected when the node fails
+  router_one_of_two: 0.30       # one of two redundant routers down (hash-split traffic)
+  dns: 0.60
+  dhcp: 0.40
+  radius: 0.50
+  firewall: 0.50
+  gateway: 0.50
+aps_per_zone: 3
+buildings:
+  - {code: LIB, name: Library,        floors: 3, zones_per_floor: [E, N], users: [90, 160]}
+  - {code: ENG, name: Engineering,    floors: 3, zones_per_floor: [E, W], users: [110, 190]}
+  - {code: ADM, name: Administration, floors: 3, zones_per_floor: [E, W], users: [40, 80]}
+  - {code: HOS, name: Hostel,         floors: 3, zones_per_floor: [A, B], users: [150, 260]}
+prior_weights:                  # relative failure frequency per node of that type (pi_h before normalisation)
+  AP: 1.0
+  SW: 0.5
+  DSW: 0.2
+  RTR: 0.15
+  CORE: 0.05
+  FW: 0.1
+  GW: 0.1
+  DNS: 0.15
+  DHCP: 0.15
+  RADIUS: 0.15

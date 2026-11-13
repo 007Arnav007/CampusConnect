@@ -1,0 +1,1 @@
+export const TOPOLOGY = { nodes: ["CORE-01","RTR-01","SW-01","AP-01","AP-02","AP-03","GW-01"], links: [["CORE-01","RTR-01"],["RTR-01","SW-01"],["SW-01","AP-01"],["SW-01","AP-02"],["SW-01","AP-03"],["CORE-01","GW-01"]] as const };

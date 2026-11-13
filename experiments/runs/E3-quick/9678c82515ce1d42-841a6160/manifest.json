@@ -1,0 +1,35 @@
+{
+  "config": {
+    "alpha": 0.1,
+    "n_calib": 600,
+    "n_test": 80,
+    "n_train": 1600,
+    "n_val": 400,
+    "quick": true,
+    "seeds": {
+      "calib": 33,
+      "test": 4401,
+      "train": 11,
+      "val": 22
+    }
+  },
+  "created_utc": "2026-11-13T13:27:34Z",
+  "elapsed_s": 89.2,
+  "families": [
+    "AP_DEGRADED",
+    "AP_DEAD",
+    "SW_DOWN",
+    "DSW_DOWN",
+    "RTR_DEGRADED",
+    "DNS_FAULT",
+    "DHCP_FAULT",
+    "RADIUS_FAULT",
+    "CORE_FAIL",
+    "WAN_FAULT"
+  ],
+  "numpy": "2.4.6",
+  "python": "3.11.7",
+  "scipy": "1.17.1",
+  "sklearn": "1.5.2",
+  "topology_hash": "sha256:ff30c274040a1fe48c6641cf3ac2e5cd935ffe40f830c96628287494aa094bc8"
+}

@@ -1,0 +1,22 @@
+{
+  "config": {
+    "n_test": 1200,
+    "n_train": 2500,
+    "reps": 6,
+    "seeds": {
+      "test": 7001,
+      "train": 6001
+    },
+    "w_b_sweep": [
+      0.02,
+      0.05,
+      0.2
+    ]
+  },
+  "created_utc": "2026-11-08T18:22:31Z",
+  "elapsed_s": 58.7,
+  "numpy": "2.5.4",
+  "python": "3.12.3",
+  "scipy": "1.18.1",
+  "sklearn": "1.9.1"
+}

@@ -1,0 +1,122 @@
+# Lab features: set LAB_MODE=true on the receiver to enable fault injection (/fault).
+# Secrets come from .env (see .env.example).
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-campusconnect}
+      POSTGRES_USER: ${POSTGRES_USER:-campusconnect}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    ports: ["127.0.0.1:${POSTGRES_PORT:-5432}:5432"]
+    volumes: [campusconnect-postgres-data:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-campusconnect} -d ${POSTGRES_DB:-campusconnect}"]
+      interval: 5s
+      retries: 10
+
+  backend:
+    build: { context: ., dockerfile: backend/Dockerfile }
+    depends_on: { postgres: { condition: service_healthy } }
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-campusconnect}
+      DATABASE_USERNAME: ${POSTGRES_USER:-campusconnect}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be >= 32 chars}
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN:?set INTERNAL_SERVICE_TOKEN}
+      ML_SERVICE_URL: http://ml-service:5100
+      INSTITUTIONAL_EMAIL_DOMAINS: ${INSTITUTIONAL_EMAIL_DOMAINS:-example.edu}
+      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-}
+    ports: ["127.0.0.1:${BACKEND_PORT:-8080}:8080"]
+    healthcheck:
+      # JRE base image ships no wget/curl; bash's /dev/tcp gives a real HTTP status check.
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080; printf \"GET /api/v1/health HTTP/1.0\\r\\n\\r\\n\" >&3; head -n1 <&3 | grep -q 200'"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+
+  ml-service:
+    build: { context: ., dockerfile: ml-service/Dockerfile }
+    environment:
+      INTERNAL_SERVICE_TOKEN: "${INTERNAL_SERVICE_TOKEN:?set INTERNAL_SERVICE_TOKEN}"
+    ports: ["127.0.0.1:${ML_SERVICE_PORT:-5100}:5100"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:5100/health >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  ai-service:
+    build: { context: ., dockerfile: ai-service/Dockerfile }
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-}
+      BACKEND_URL: http://backend:8080
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:5000/health >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+
+  receiver:
+    build: { context: ., dockerfile: emergency-receiver/Dockerfile }
+    environment:
+      RECEIVER_ID: ${RECEIVER_ID:-RX-LIB}
+      PROTOCOL_KEY_ID: ${PROTOCOL_KEY_ID:-k1}
+      PROTOCOL_HMAC_SECRET: ${PROTOCOL_HMAC_SECRET:?set PROTOCOL_HMAC_SECRET}
+      ACK_MODE: ${ACK_MODE:-LOCAL_DURABLE}
+      BACKEND_URL: http://backend:8080
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN}
+      LAB_MODE: ${LAB_MODE:-false}
+    volumes: [receiver-data:/data]
+    ports: ["127.0.0.1:${RECEIVER_HEALTH_PORT:-4001}:4001", "127.0.0.1:${UDP_PORT:-41234}:41234/udp", "127.0.0.1:${TCP_EVENT_PORT:-41235}:41235"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:4001/health >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  gateway:
+    build: { context: ., dockerfile: gateway/Dockerfile }
+    depends_on:
+      backend: { condition: service_healthy }
+      receiver: { condition: service_healthy }
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN}
+      PROTOCOL_KEY_ID: ${PROTOCOL_KEY_ID:-k1}
+      PROTOCOL_HMAC_SECRET: ${PROTOCOL_HMAC_SECRET}
+      RECEIVER_ID: ${RECEIVER_ID:-RX-LIB}
+      UDP_HOST: receiver
+      TCP_EVENT_HOST: receiver
+      CRITICAL_TEST_MODE: ${CRITICAL_TEST_MODE:-true}
+      BACKEND_URL: http://backend:8080
+      ML_SERVICE_URL: http://ml-service:5100
+      AI_SERVICE_URL: http://ai-service:5000
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+    ports: ["127.0.0.1:${GATEWAY_PORT:-3001}:3001"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3001/health >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_URL: http://localhost:3001
+        VITE_WS_URL: ws://localhost:3001
+    depends_on: { gateway: { condition: service_healthy } }
+    ports: ["127.0.0.1:5173:80"]
+
+volumes:
+  campusconnect-postgres-data:
+  receiver-data:

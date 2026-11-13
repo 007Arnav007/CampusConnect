@@ -1,0 +1,32 @@
+{
+  "single": {
+    "mode": "single",
+    "trials": 300,
+    "delivered_count": 280,
+    "delivery_rate": 0.933,
+    "on_time_count": 278,
+    "on_time_rate": 0.927,
+    "median_latency_ms": 36.5,
+    "p95_latency_ms": 62.5
+  },
+  "back-to-back": {
+    "mode": "back-to-back",
+    "trials": 300,
+    "delivered_count": 292,
+    "delivery_rate": 0.973,
+    "on_time_count": 292,
+    "on_time_rate": 0.973,
+    "median_latency_ms": 27.1,
+    "p95_latency_ms": 47.0
+  },
+  "spaced": {
+    "mode": "spaced",
+    "trials": 300,
+    "delivered_count": 288,
+    "delivery_rate": 0.96,
+    "on_time_count": 286,
+    "on_time_rate": 0.953,
+    "median_latency_ms": 37.4,
+    "p95_latency_ms": 65.8
+  }
+}

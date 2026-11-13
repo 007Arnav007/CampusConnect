@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    background-color: #020617;
+    color: #e2e8f0;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  label {
+    display: grid;
+    gap: 0.5rem;
+    color: #cbd5e1;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    min-height: 2.75rem;
+    border: 1px solid #334155;
+    border-radius: 0.75rem;
+    padding: 0.7rem 0.875rem;
+    color: #f8fafc;
+    background-color: #0f172a;
+    caret-color: #a5b4fc;
+    color-scheme: dark;
+    outline: none;
+    transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+  }
+
+  textarea {
+    min-height: 8rem;
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 3px rgb(99 102 241 / 0.2);
+  }
+
+  input:hover,
+  textarea:hover,
+  select:hover {
+    border-color: #475569;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+  }
+
+  select option {
+    color: #f8fafc;
+    background-color: #0f172a;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid #a5b4fc;
+    outline-offset: 2px;
+  }
+
+  input:disabled,
+  textarea:disabled,
+  select:disabled {
+    color: #cbd5e1;
+    opacity: 0.75;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #f8fafc;
+    box-shadow: 0 0 0 1000px #0f172a inset;
+    transition: background-color 9999s ease-out;
+  }
+}
