@@ -1,98 +1,72 @@
-# CampusConnect v2 — Complete Step-by-Step Project Guide & Technical Walkthrough
-**A Complete Guide with Real Screenshots, Technical Terms Explained, and Deep-Dive into CNT & ML Concepts**
+# CampusConnect v2 — Complete Guided Tour & Feature Walkthrough
+**A Friendly, Screen-by-Screen Visual Guide with Real Screenshots and Simple Explanations**
 
 ---
 
-## 📌 Executive Summary (Explained in Plain English)
+## 🌟 What is CampusConnect v2? (In 1 Minute)
 
-Imagine you are living in a huge college campus with 30,000 students and hundreds of Wi-Fi routers (Access Points) spread across academic blocks, libraries, and hostels.
+Think of **CampusConnect v2** as a smart two-in-one platform built for college campuses:
 
-When a Wi-Fi router on the 3rd floor of Academic Block 2 completely burns out or loses power, **it goes completely silent**. It cannot send an email or an SNMP alert saying *"I am dead"*, because it has no power or network link left. Meanwhile, students sitting in class get disconnected and start filing helpdesk tickets: *"Wi-Fi stopped working in AB2 3rd floor!"*
+1. **For Students:** It is a friendly academic and support portal. You can find all study materials for 8 CS subjects (syllabi, lecture timetables, curated YouTube playlists, textbook PDFs, and real-time class chat), file support complaints if anything is broken, and chat with a campus AI assistant.
+2. **For Campus Network Engineers:** It is an intelligent **"Network Doctor"**. When Wi-Fi routers crash or burn out, they stop sending data and go completely silent. Our AI connects the dots between student complaints and the campus network map to identify exactly which Wi-Fi router or switch failed!
 
-Traditional network tools (like SolarWinds or PRTG) and traditional student helpdesks (like Zendesk or Jira) don't talk to each other. The network team looks at green dashboard lights (thinking the router is just idle), while the helpdesk team reads vague complaints without knowing which cable or router failed.
-
-**CampusConnect v2 solves this problem by combining two systems:**
-1. **A Full Student Academics & Support Portal:** Students have access to 8 CS subjects (syllabi, timetables, YouTube playlists, textbooks, class chat, assignments), support ticketing, and an AI campus assistant.
-2. **A Smart Network AI ("Network Doctor"):** Whenever a student files a complaint, our AI takes their location, checks the campus network graph, and realizes that the silent router isn't just idle — **its silence is evidence of a crash!** This is called **Informative Missingness**.
+Let's take a tour through the entire application screen-by-screen, starting right from the login page!
 
 ---
 
-## 📖 Glossary of Terms (Every Concept Explained Simply)
-
-Before diving into the screenshots, here is a simple translation of every technical term used in this project:
-
-| Term | What It Means in Simple English |
-|---|---|
-| **CNT (Computer Networks & Telecommunications)** | The engineering field that studies how computers talk to each other over wires, fiber optics, and wireless radio waves. |
-| **ML (Machine Learning)** | Computer programs that learn patterns from data and make probabilistic predictions rather than following rigid if-else rules. |
-| **Access Point (AP)** | The ceiling-mounted Wi-Fi box that broadcasts the wireless signal to your phone or laptop. |
-| **Switch** | A network box inside a server rack that connects multiple cables together within a building. |
-| **Core Router** | The heavy-duty backbone router that connects all campus buildings to the main internet service provider. |
-| **Topology Graph** | A network map showing which device is plugged into which (e.g., Router $\to$ Building Switch $\to$ Floor Switch $\to$ Access Point). |
-| **Telemetry** | Automated health measurements streamed by network devices (e.g., CPU temperature, packet loss %, round-trip latency). |
-| **Informative Missingness** | In standard stats, missing data is assumed to be accidental (like someone skipping a survey question). In networking, **when a device stops sending telemetry, its silence is proof of its failure**! Just like Sherlock Holmes' famous "dog that didn't bark in the night". |
-| **Bayesian Inference** | A mathematical way of updating your belief about an event as new clues arrive ($P(\text{Router Broken} \mid \text{Complaints} + \text{Silence})$). |
-| **Split-Conformal Prediction** | Instead of guessing one single router, the AI gives a *small group of suspect routers* with a mathematical guarantee: *"We guarantee 90% of the time, the real broken router is inside this box."* |
-| **UDP (User Datagram Protocol)** | A lightweight internet transport protocol that shoots packets fast without waiting for connection setup, but doesn't guarantee delivery. |
-| **TCP (Transmission Control Protocol)** | A reliable internet transport protocol that sets up a 3-way handshake and guarantees every byte arrives in order. |
-| **Protocol v2** | Our custom emergency network protocol that gives UDP the reliability of TCP and cryptographic security without heavy overhead. |
-| **HMAC-SHA256** | A digital wax seal (cryptographic signature) attached to packets using a secret key. If a hacker tampers with 1 bit, the seal breaks. |
-| **RFC 8785 Canonical JSON** | Sorting JSON fields alphabetically and removing extra spaces before signing so that Java, Python, and JavaScript all produce the exact same digital seal. |
-| **Sliding Anti-Replay Window (RFC 4303)** | A 64-bit memory check that accepts out-of-order packets while instantly rejecting duplicate copies re-sent by an attacker. |
-| **Gilbert–Elliott Channel Model** | A mathematical 2-state model simulating real-world Wi-Fi, which flips between a **Good state** (no loss) and a **Bad state** (bursts of dropped packets). |
-| **Spaced UDP Copies** | Sending 2 copies of a packet separated by a small time gap ($30\text{ ms}$) so that even if the first copy hits a Wi-Fi burst loss, the second copy survives. |
-| **Cancel-on-ACK** | Once the receiver sends back an acknowledgement (ACK) that packet #1 arrived, the sender cancels any scheduled backup copies to save bandwidth. |
-| **RTO (Retransmission Timeout) & RFC 6298** | The timer that decides how long a sender should wait before assuming a packet was lost and re-transmitting it. |
-| **RAG (Retrieval-Augmented Generation)** | An AI chatbot technique where the AI first reads factual local documents (like campus PDFs) before generating an answer, stopping hallucinations. |
-| **WebSocket** | A permanent, two-way open phone line between the user's browser and the server so updates (like chat messages or network alerts) appear instantly without refreshing. |
+## 🧭 Visual Walkthrough: Screen by Screen
 
 ---
 
-## 📸 Step-by-Step Project Walkthrough with Real Screenshots
-
-Below is the complete walkthrough of CampusConnect v2 from start to finish. Every screen has its actual capture from the application, an explanation of what is happening, and the exact CNT / ML concepts powering it.
-
----
-
-### Step 1: Student Authentication & Sign In
+### Step 1: Logging In to CampusConnect
 
 ![Student Login Page](screenshots/01_login_page.png)
 
-#### What You See on Screen:
-The clean authentication gateway with institutional email validation, password visibility toggle, error handling banners, and links to registration and administrative access. Any student with a valid `@vit.edu` email can log in or register.
+#### 🖥️ What You See on the Screen:
+* A modern, dark-themed login box with the CampusConnect Wi-Fi logo at the top.
+* **Institutional Email input field:** Where you type your college email (e.g. `priya.patel@example.edu` or any `@vit.edu` email).
+* **Password field:** With an eye toggle icon to show or hide your password.
+* **"Sign In" button:** Submits your credentials.
+* **Top Navigation Bar:** Quick links to return to Home, Sign In, Admin Login, or "Get Started" (Register an account).
 
-#### How It Works Under the Hood:
-1. The student submits their email and password.
-2. The browser sends a secure HTTP `POST` request to `/api/v1/auth/login`.
-3. The Spring Boot backend checks the password against salted cryptographic hashes (`BCrypt` / `PBKDF2`).
-4. Upon validation, the server generates a signed **JWT (JSON Web Token)** containing the user's ID, roles (`STUDENT`), and an expiration timestamp.
-5. The frontend saves this token in `localStorage` and injects it into the `Authorization: Bearer <token>` header of every subsequent API request.
+#### 🏷️ Terms Explained Simply:
+* **Institutional Email:** A college-issued email ID (like `@vit.edu`) that proves you are a verified student or faculty member on campus.
+* **JWT (JSON Web Token):** Like a digital campus ID card stamped with your permissions. Once you log in, the server gives your browser this digital pass so you don't have to retype your password on every page.
 
-#### How It Uses CNT:
-* **Transport Layer Security (TLS/HTTPS):** Operates on TCP Port 443 with encrypted handshakes, protecting plaintext passwords against packet-sniffing attacks (Wireshark) on campus Wi-Fi.
-* **Stateless RESTful Protocol:** Uses standard HTTP request-response cycles. Because tokens are self-contained in the client header, the backend server requires no shared session state memory, enabling seamless horizontal scaling.
+#### ⚙️ How It Works in Plain English:
+When you click **Sign in**, your browser encrypts your email and password and sends them to the server. The server verifies your credentials, gives your browser a secure digital pass (JWT token), and automatically redirects you to the student dashboard.
+
+#### 📡 The Networking Behind It (In Simple Words):
+* **HTTPS / SSL Encryption:** Your password isn't sent as open text. It is scrambled across the network so that nobody sitting on the same campus Wi-Fi can snoop on your password.
 
 ---
 
-### Step 2: Student Dashboard & Live Campus Overview
+### Step 2: The Student Dashboard
 
 ![Student Dashboard](screenshots/02_student_dashboard.png)
 
-#### What You See on Screen:
-The personalized student portal homepage displaying real-time metric counters:
-* **Active Support Tickets** filed by the student.
-* **Campus Incident Alerts** affecting campus connectivity.
-* **Enrolled Academic Courses** (showing 8 Computer Science courses).
-* Quick action shortcuts to submit a ticket, explore academics, chat with the AI assistant, or launch the CNT Visual Lab.
+#### 🖥️ What You See on the Screen:
+* **Top Greeting:** *"Welcome back, Priya Patel"* with your student status.
+* **Quick Stats Cards:**
+  * **Open Tickets:** Number of support complaints you currently have open.
+  * **Campus Alerts:** Active network issues or announcements across campus.
+  * **Enrolled Courses:** 8 Computer Science subjects ready to access.
+* **Quick Action Buttons:**
+  * *"Submit a Ticket"* (Report an issue).
+  * *"Go to Academics"* (Check notes and syllabus).
+  * *"Ask AI Assistant"* (Get instant campus answers).
+  * *"Open CNT Lab"* (Interactive networking visualizer).
+* **Sidebar Menu (Left):** Gives one-click access to Dashboard, Academics, Support Tickets, AI Assistant, Visual Lab, Notifications, and Profile.
 
-#### How It Works Under the Hood:
-1. On component mount, the dashboard invokes three parallel REST queries (`getTickets()`, `getAcademicCourses()`, `getIncidents()`).
-2. Simultaneously, it initializes a **Socket.io WebSocket connection** with the API Gateway on port `3001`.
-3. If an administrator resolves an incident or replies to a ticket, a WebSocket event (`ticket:updated`) fires, and the dashboard counters re-render instantly without requiring a page refresh.
+#### 🏷️ Terms Explained Simply:
+* **Dashboard:** A central home screen that summarizes everything you care about in one place.
+* **Open Ticket:** A complaint you submitted that is currently being looked at by campus staff.
 
-#### How It Uses CNT:
-* **Persistent WebSockets over TCP:** Unlike HTTP which opens and closes TCP connections repeatedly, WebSockets upgrade the HTTP connection (`HTTP 101 Switching Protocols`) into a permanent, bidirectional stream.
-* **Ping-Pong Heartbeat Frames:** The client and server exchange 2-byte heartbeat frames every 25 seconds to verify link liveness and detect silent Wi-Fi dropouts.
+#### ⚙️ How It Works in Plain English:
+As soon as you log in, this dashboard automatically checks your account, counts how many tickets you've filed, checks if any Wi-Fi in your block is down, and shows you helpful shortcuts.
+
+#### 📡 The Networking Behind It (In Simple Words):
+* **WebSockets (Live Updates):** Instead of you having to refresh the page over and over to see if your ticket was resolved, the server keeps a live line open (a WebSocket). When an admin updates your ticket, the screen updates in real time!
 
 ---
 
@@ -100,8 +74,8 @@ The personalized student portal homepage displaying real-time metric counters:
 
 ![Academics Hub](screenshots/03_academics_courses_list.png)
 
-#### What You See on Screen:
-The comprehensive Computer Science curriculum hub featuring **8 core subjects**:
+#### 🖥️ What You See on the Screen:
+A clean directory showing **8 essential Computer Science subjects**:
 1. **Machine Learning (`CSE601`)**
 2. **Computer Networks (`CNT501`)**
 3. **Design & Analysis of Algorithms (`CSE602`)**
@@ -111,327 +85,326 @@ The comprehensive Computer Science curriculum hub featuring **8 core subjects**:
 7. **Database Management Systems (`CSE606`)**
 8. **Advanced Data Structures (`CSE607`)**
 
-Each subject card indicates credit rating, faculty coordinator, enrolled student counts, and direct action buttons to enroll or access study materials.
+Each card shows the course code, credit count (e.g. 4 credits), professor name, class capacity, and an **"Open Course"** or **"Enroll"** button.
 
-#### How It Works Under the Hood:
-The frontend fetches the course directory from `/api/v1/academics/courses`. State is managed via React Context, enabling instant client-side filtering by semester, department, or keyword.
+#### 🏷️ Terms Explained Simply:
+* **Course Code:** A short unique ID for a subject (e.g., `CNT501` stands for Computer Networks and Telecommunications, 5th semester, course 01).
+* **Credits:** The academic weightage of the course towards your degree.
 
-#### How It Uses CNT:
-* **Optimized Payload Serialization:** Course data is serialized in lightweight JSON payloads with gzip compression over HTTP/2, reducing bandwidth consumption on congested campus wireless links.
+#### ⚙️ How It Works in Plain English:
+Clicking on any card opens that subject's complete study center. Let's click on **Machine Learning** to see what's inside!
 
 ---
 
-### Step 4: Course Detail & Overview Page
+### Step 4: Course Overview — Machine Learning (`CSE601`)
 
 ![Course Overview](screenshots/04_academics_course_overview.png)
 
-#### What You See on Screen:
-Opening **Machine Learning (`CSE601`)** displays a modular tabbed interface with:
-* Course code, faculty details, and department credits.
-* Course description and grading weightage.
-* Six dedicated sub-views: **Overview**, **Syllabus**, **Timetable**, **Resources**, **Chat**, and **Announcements**.
+#### 🖥️ What You See on the Screen:
+* Subject title: **Machine Learning** with code `CSE601`.
+* Department, Faculty name, and credits.
+* **Navigation Tabs at the top:**
+  * **Overview:** Summary of the subject.
+  * **Syllabus:** The full curriculum broken down into 8 units.
+  * **Timetable:** Days, times, and room locations for lectures & labs.
+  * **Resources:** Curated YouTube playlists and textbook PDFs.
+  * **Chat:** Real-time discussion room for this class.
+  * **Announcements:** Exam dates and assignment updates.
 
-#### How It Works Under the Hood:
-The interface uses React Router nested sub-routes (`/academics/CSE601/overview`, `/academics/CSE601/syllabus`, etc.). Deep-linking allows students to share direct URLs with classmates.
+#### ⚙️ How It Works in Plain English:
+Each tab keeps your study materials neatly organized so you never have to search multiple websites or chat groups for notes.
 
 ---
 
-### Step 5: 8-Unit Granular Syllabus Breakdown
+### Step 5: 8-Unit Complete Syllabus Breakdown
 
 ![Syllabus Breakdown](screenshots/05_academics_syllabus.png)
 
-#### What You See on Screen:
-A full 8-unit curriculum breakdown for Machine Learning:
+#### 🖥️ What You See on the Screen:
+A step-by-step breakdown of all 8 teaching modules for the semester:
 * Unit 1: Introduction & Linear Regression
 * Unit 2: Classification & Logistic Regression
-* Unit 3: Tree Models & Ensemble Methods
-* Unit 4: Neural Networks & Backpropagation
-* Unit 5: Support Vector Machines & Kernels
+* Unit 3: Decision Trees & Random Forests
+* Unit 4: Neural Networks & Deep Learning
+* Unit 5: Support Vector Machines (SVM)
 * Unit 6: Unsupervised Learning & Clustering
-* Unit 7: Dimensionality Reduction (PCA / t-SNE)
+* Unit 7: Dimensionality Reduction (PCA)
 * Unit 8: Model Evaluation & Conformal Uncertainty
 
-#### How It Uses ML:
-The syllabus introduces the mathematical foundations used directly in CampusConnect's backend — specifically **Bayesian classification**, **log-likelihood estimation**, and **Split-Conformal Prediction**.
+#### 🤖 The Machine Learning Behind It (In Simple Words):
+This syllabus doesn't just teach theory — the exact topics in Unit 8 (**Bayesian Inference** and **Conformal Prediction**) are the exact machine learning methods our own project uses to diagnose campus network faults!
 
 ---
 
-### Step 6: Visual Timetable & Lab Slot Schedule
+### Step 6: Weekly Timetable & Room Locations
 
 ![Weekly Timetable](screenshots/06_academics_timetable.png)
 
-#### What You See on Screen:
-A structured weekly timetable outlining Monday through Friday lecture slots, room locations (e.g. `AB2-301`), and dedicated practical laboratory hours.
+#### 🖥️ What You See on the Screen:
+* A weekly schedule from Monday to Friday.
+* Lecture slots with start and end times.
+* **Room Numbers:** e.g., `AB2-301` (Academic Block 2, Room 301).
+* Dedicated practical lab sessions.
 
-#### How It Uses CNT:
-* **Spatial Network Mapping:** Each room entry (e.g. `AB2-301`) maps directly to the network node ID (`AP-AB2-301`) in the campus topology graph. This shared namespace allows the system to cross-reference where students are scheduled to be with where network faults occur!
+#### 📡 The Networking Connection (In Simple Words):
+Notice the room number `AB2-301`? Every classroom on campus has a Wi-Fi router mounted on the ceiling with a matching name: `AP-AB2-301`. Because our platform knows which room you're in, it can immediately tell which Wi-Fi router serves your class!
 
 ---
 
-### Step 7: Curated Video Playlists & Textbook PDFs
+### Step 7: Video Lecture Playlists & Textbook PDFs
 
 ![Learning Resources](screenshots/07_academics_resources_videos.png)
 
-#### What You See on Screen:
-Direct links to curated educational media:
-* Top YouTube lecture series (NPTEL, Stanford CS229, MIT OpenCourseWare).
-* Standard reference textbooks and laboratory manuals.
+#### 🖥️ What You See on the Screen:
+* **YouTube Playlists Card:** Curated links to top university lecture series (NPTEL, Stanford, MIT).
+* **Reference Books Card:** Recommended textbook PDFs and reference manuals available for reading and download.
 
-#### How It Uses CNT:
-* **HTTP Range Requests (RFC 7233):** When students stream lecture videos or download multi-megabyte textbook PDFs, the browser uses `Range: bytes=0-1048575` headers. This allows partial streaming, pause/resume, and random seeking without re-downloading entire video streams.
-* **TCP Flow & Congestion Control:** Video streaming utilizes TCP Reno / Cubic congestion windows to dynamically adjust playback buffer sizes based on available campus Wi-Fi bandwidth.
+#### 📡 The Networking Behind It (In Simple Words):
+* **Video Streaming & Buffering:** When you stream a lecture video, your device uses **TCP flow control**. Instead of downloading an entire 1-hour video at once (which would freeze slow campus Wi-Fi), the video is streamed in small 5-second chunks as you watch.
 
 ---
 
-### Step 8: Real-Time Section Discussion Chat
+### Step 8: Real-Time Class Discussion Chat
 
 ![Real-Time Class Chat](screenshots/08_academics_class_chat.png)
 
-#### What You See on Screen:
-A live, interactive chatroom where students and teaching assistants exchange subject queries in real time with message timestamps and sender avatars.
+#### 🖥️ What You See on the Screen:
+* A live discussion room for the class.
+* Messages sent by students with timestamps and user avatars.
+* A message input box at the bottom with a Send button.
 
-#### How It Works Under the Hood:
-1. When a student enters `CSE601`, the frontend sends a `socket.emit('chat:join', { courseId: 'CSE601' })` message.
-2. The Node.js Gateway adds the socket to a private Socket.io room (`rooms.get('course:CSE601')`).
-3. Outgoing messages are broadcast only to peers in that room, ensuring total isolation between different courses.
+#### ⚙️ How It Works in Plain English:
+Whenever a student has a doubt about homework or an upcoming test, they post it here. Everyone enrolled in the course sees it immediately on their screen without needing to reload the page.
 
-#### How It Uses CNT:
-* **Socket Multiplexing:** Multiple logical chat rooms and alert streams share a single physical TCP connection between client and gateway.
-* **Transport Protocol Comparison:** Chat demonstrates **TCP-based delivery** (where no message can be dropped or arrive out of order), contrasting with the UDP delivery explored in Protocol v2.
+#### 📡 The Networking Behind It (In Simple Words):
+* **Chat Rooms over WebSockets:** The server creates a private "channel" for each course. When someone types a message, the server only blasts it to students inside that specific course room, keeping other classes completely private.
 
 ---
 
-### Step 9 & 10: Student Helpdesk & Spatial Ticket Submission
+### Step 9 & 10: Student Helpdesk & Filing a Support Ticket
 
 ![Student Tickets List](screenshots/09_tickets_student_list.png)
-*(Above: Student ticket management list showing status, category badges, and priority tags)*
+*(Above: List of filed tickets showing priority colors, categories, and progress status)*
 
 ![Ticket Submission Modal](screenshots/10_tickets_create_modal.png)
-*(Above: Interactive modal for filing a network or campus infrastructure ticket)*
+*(Above: Pop-up form to file a new complaint with location details)*
 
-#### What You See on Screen:
-* A helpdesk ticket management table with priority tags (`LOW`, `MEDIUM`, `HIGH`, `URGENT`) and lifecycle states (`OPEN` $\to$ `IN_PROGRESS` $\to$ `RESOLVED`).
-* A ticket creation dialog with category selector, subject title, detailed description, and a **geographic campus location tag** (e.g. `AB2 - Academic Block 2, 3rd Floor`).
+#### 🖥️ What You See on the Screen:
+* **Ticket List:** Shows tickets with status badges: `OPEN` (Waiting for staff), `IN_PROGRESS` (Being fixed), and `RESOLVED` (Done).
+* **New Ticket Form:**
+  * **Category Dropdown:** Network, Academic, Infrastructure, Hostel.
+  * **Priority Level:** Low, Medium, High, Urgent.
+  * **Title & Description:** Where you explain the problem.
+  * **Campus Location Selector:** Crucial field where you select your building and floor (e.g. `AB2 - 3rd Floor`).
 
-#### How It Works Under the Hood & How It Feeds the ML Localizer:
-1. When a student clicks **Submit Ticket**, the ticket is stored in PostgreSQL.
-2. The location tag (`AB2-3`) is parsed by the API Gateway and forwarded to the ML Service.
-3. **This is the core human-sensor input:** The ML Service aggregates tickets by building zone over a sliding 15-minute time window, producing the ticket evidence vector $d_R$ that fuels the Bayesian Fault Localizer!
+#### 🏷️ Terms Explained Simply:
+* **Ticket:** An official tracking record for a problem you report.
+* **Priority (Low vs Urgent):** Tells campus staff if it's a minor question or a critical outage affecting hundreds of students.
+
+#### 🤖 How This Feeds the AI (In Simple Words):
+Students are like **"human sensors"** walking around campus. When you report *"Wi-Fi stopped working on AB2 3rd Floor"*, the system doesn't just send an email — it feeds your location straight into our AI fault detector!
 
 ---
 
-### Step 11, 12 & 13: Grounded AI Campus Assistant (RAG)
+### Step 11, 12 & 13: Grounded Campus AI Assistant
 
 ![AI Assistant Welcome Screen](screenshots/11_ai_assistant_welcome.png)
-*(Above: AI Assistant introductory screen with pre-built prompt suggestions)*
+*(Above: Friendly AI chatbot screen with suggested campus questions)*
 
-![Asking Campus Wi-Fi Question](screenshots/12_ai_assistant_rag_query.png)
-*(Above: Student submitting query: "How do I connect to campus Wi-Fi?")*
+![Asking a Question](screenshots/12_ai_assistant_rag_query.png)
+*(Above: Student asking: "How do I connect to campus Wi-Fi?")*
 
-![Grounded Answer with Source Citations](screenshots/13_ai_assistant_answer.png)
-*(Above: Accurate, grounded step-by-step connection guide citing local policy markdown)*
+![Accurate Grounded Response](screenshots/13_ai_assistant_answer.png)
+*(Above: Instant step-by-step connection guide citing official campus policy docs)*
 
-#### What You See on Screen:
-The student queries the AI assistant regarding campus Wi-Fi connection steps. The assistant provides an exact step-by-step guide (SSID `VIT-Student`, 802.1X PEAP authentication, MSCHAPv2 inner protocol) and references the exact local knowledge base source.
+#### 🖥️ What You See on the Screen:
+* An AI chat window where students can ask questions about campus life, hostel rules, or Wi-Fi setup.
+* When asked *"How do I connect to campus Wi-Fi?"*, the AI immediately replies with official instructions: select the `VIT-Student` Wi-Fi network, use 802.1X PEAP authentication, and log in with your student credentials.
+* It shows the exact document source it used to answer!
 
-#### How It Uses ML (Retrieval-Augmented Generation):
-* **Embedding & Semantic Search:** Rather than allowing the LLM to invent instructions, the query is converted into a vector embedding and matched against local campus policy documents in `ai-service/knowledge-base/` using cosine similarity.
-* **Safety & Anti-Hallucination Guardrails:** If the question falls outside campus scope (e.g., general chit-chat), strict prompt boundaries ensure the model states it only answers campus-related questions.
+#### 🏷️ Terms Explained Simply:
+* **RAG (Retrieval-Augmented Generation):** Normally, AI chatbots might make up fake facts (called hallucinations). RAG fixes this by forcing the AI to **first search college PDF documents** on the server, find the true answer, and only then write its response.
+* **Guardrails:** Rules programmed into the AI so it stays helpful and refuses to answer irrelevant or inappropriate questions.
 
 ---
 
-### Step 14: CNT Visual Lab — Gilbert–Elliott Wireless Burst Loss Simulation
+### Step 14: CNT Visual Lab — Burst Loss & Wi-Fi Glitch Simulator
 
 ![CNT Lab - Gilbert-Elliott Simulation](screenshots/14_cnt_lab_burst_loss.png)
 
-#### What You See on Screen:
-An interactive simulator visualizing how Wi-Fi signals behave in crowded environments:
-* **Mean Loss Slider** (e.g., 15% packet loss).
-* **Mean Burst Length Slider** (e.g., 150 ms loss duration).
-* **Round-Trip Time Slider** (40 ms).
-* **Visual Channel Strip:** Green bands indicate the channel is Good; red bands show correlated burst drops.
-* **Comparative Monte Carlo Benchmark:**
-  * Spaced transmission ($k=2, \Delta t=30\text{ ms}$): **85.3% on-time delivery**.
-  * Back-to-back transmission ($\Delta t=0\text{ ms}$): **83.8% on-time delivery**.
-* **Physical Linux Kernel Socket Evidence Card (`tc netem`):** Real socket measurements across Linux network namespaces showing **99.7% delivery** for spaced copies vs 97.3% for back-to-back under 20% burst loss!
+#### 🖥️ What You See on the Screen:
+An interactive laboratory that lets you simulate what happens to Wi-Fi packets when an antenna gets blocked:
+* **Mean Loss Slider:** Set how bad the Wi-Fi connection is (e.g. 15% packet loss).
+* **Mean Burst Length Slider:** Set how long glitches last (e.g. 150 ms).
+* **The Visual Strip:**
+  * **Green bands:** Wi-Fi is working smoothly.
+  * **Red bands:** A temporary glitch/burst loss where packets get dropped.
+* **The Big Comparison Result:**
+  * **Back-to-Back packets (0 ms gap):** 83.8% success.
+  * **Spaced packets (30 ms gap):** **85.3% success** (and **99.7%** in physical Linux kernel tests)!
 
-#### How It Uses CNT:
-* **Gilbert–Elliott 2-State Markov Chain:** Real wireless loss is not independent (Bernoulli). When an obstacle (like a human walking past an antenna) blocks a radio beam, multiple consecutive packets are lost in a burst.
-* **Temporal Diversity & Burst Escape:** Sending 2 copies separated by $\ge$ the mean burst duration guarantees that even if copy #1 enters a red burst band, copy #2 arrives after the channel has transitioned back to the Good state.
-* **Cancel-on-ACK Bandwidth Conservation:** Once copy #1's ACK arrives, copy #2 is cancelled before transmission, using only 1.98 datagrams on average.
+#### 🏷️ Terms Explained Simply:
+* **Packet Loss:** When a piece of data sent over the air gets lost and never reaches the other computer.
+* **Burst Loss:** In Wi-Fi, packets don't just drop one by one; they drop in clusters or "bursts" (for example, when someone walks in front of the antenna or a microwave turns on).
+* **Gilbert–Elliott Model:** A simple mathematical model that flips between two states: **Good** (everything works) and **Bad** (packets get dropped).
+
+#### 📡 The Networking Secret Explained:
+Why does spacing packets work so well?
+If you shoot two packets right next to each other during a red glitch band, **both packets get destroyed**. But if you pause for just 30 milliseconds before sending the second packet, the glitch ends and the second packet survives! Once the server acknowledges packet #1, packet #2 is cancelled so no bandwidth is wasted.
 
 ---
 
-### Step 15: CNT Visual Lab — RFC 6298 Adaptive Retransmission Timeout (RTO) Race
+### Step 15: CNT Visual Lab — The Adaptive Timer Race (RFC 6298)
 
 ![CNT Lab - RTO Race](screenshots/15_cnt_lab_rto_race.png)
 
-#### What You See on Screen:
-A real-time race comparing a **Fixed 200 ms Timer** against the standard **RFC 6298 Adaptive RTO Timer**:
-* When network latency fluctuates between 20 ms and 180 ms, the fixed timer either triggers premature duplicate transmissions or takes too long to recover.
-* The adaptive timer continuously tracks network jitter, keeping the RTO safely above the round-trip time.
+#### 🖥️ What You See on the Screen:
+A race between two countdown timers:
+1. **A Fixed Timer (dumb):** Always waits exactly 200 ms.
+2. **The RFC 6298 Adaptive Timer (smart):** Automatically measures how fast the network is running and adjusts its countdown clock dynamically!
 
-#### How It Uses CNT:
-* **Jacobson's Algorithm:** Implements the core Internet RFC 6298 mathematics:
-  $$\text{Diff} = \text{SampleRTT} - SRTT$$
-  $$SRTT \leftarrow SRTT + \frac{1}{8} \cdot \text{Diff}$$
-  $$RTTVAR \leftarrow RTTVAR + \frac{1}{4} \cdot (|\text{Diff}| - RTTVAR)$$
-  $$RTO = SRTT + \max(G, 4 \cdot RTTVAR)$$
-* **Karn's Algorithm & Exponential Backoff:** If a timeout occurs, $RTO$ doubles ($2 \times RTO$) to alleviate network congestion.
+#### 🏷️ Terms Explained Simply:
+* **RTO (Retransmission Timeout):** How long your phone waits for an acknowledgement before saying *"The server didn't reply, let me re-send the packet!"*
+* **Jitter:** Unpredictable fluctuations in network speed (sometimes 20 ms, sometimes 120 ms).
+
+#### 📡 The Networking Secret Explained:
+If a timer is too short, your phone gets impatient and sends duplicate packets, clogging the Wi-Fi. If it's too long, you sit staring at a loading spinner. The **RFC 6298 adaptive timer** uses running math (EWMA) to stay just above the current delay, making retransmissions as fast and efficient as possible.
 
 ---
 
-### Step 16: CNT Visual Lab — 64-Bit Sliding Anti-Replay Window (RFC 4303)
+### Step 16: CNT Visual Lab — 64-Bit Anti-Replay Window (RFC 4303)
 
 ![CNT Lab - Replay Window](screenshots/16_cnt_lab_replay_window.png)
 
-#### What You See on Screen:
-An interactive visual representation of an IPsec-style 64-packet bitmask window:
-* Packets arriving in order advance the right edge of the window.
-* Packets arriving slightly out-of-order (normal UDP behavior) are accepted if they fall within the 64-packet window.
-* Duplicate or replayed packets are instantly rejected.
+#### 🖥️ What You See on the Screen:
+An interactive visualizer showing a security check for incoming packets:
+* Packets arriving with higher numbers slide the green window forward.
+* Packets arriving slightly out of order (which is normal on UDP) are safely accepted.
+* Any duplicate packet or replayed packet is caught in red and immediately thrown away!
 
-#### How It Uses CNT & Network Security:
-* **Anti-Replay Protection:** In emergency communication, an adversary could capture an authentic "Evacuate Building" datagram and re-transmit it hours later.
-* **Bitwise Efficiency ($O(1)$ Complexity):** Instead of storing millions of sequence IDs in a database, the receiver uses a single 64-bit integer (`uint64_t`). Verifying whether sequence $S$ was already seen requires just one bitwise AND operation:
-  $$\text{seen} = (\text{bitmap} \ \& \ (1\text{ULL} \ll (\text{max\_seq} - S))) \neq 0$$
+#### 🏷️ Terms Explained Simply:
+* **Replay Attack:** When a malicious hacker intercepts a valid packet (like *"Unlock Campus Gate"*) and broadcasts it again 2 hours later to fool the server.
+* **Sliding Window:** A moving frame of numbers (like looking through a sliding cardboard cutout) that remembers which packet numbers were already processed.
+* **Bitmask:** Using 64 binary bits (`0` or `1`) inside the computer's CPU to check for duplicates in less than 1 nanosecond without needing a slow database query.
 
 ---
 
-### Step 17: Admin & Network Engineer Sign In
+### Step 17 & 18: Admin Sign In & Network Operations Dashboard
 
 ![Admin Login](screenshots/17_admin_login.png)
-
-#### What You See on Screen:
-The administrative access portal for network engineers and IT managers (`admin@example.edu`).
-
-#### How It Works Under the Hood:
-Upon authentication, the backend validates the `ADMIN` role claim in the JWT. Protected routes (`/admin/*`) verify this role; any unauthorized student attempting to access admin routes is immediately redirected to an `Access Denied` view.
-
----
-
-### Step 18: Admin Network Operations Center (NOC) Dashboard
+*(Above: Admin sign in portal for network engineers)*
 
 ![Admin Overview](screenshots/18_admin_dashboard_overview.png)
+*(Above: Network Operations Center showing real-time network health and ticket streams)*
 
-#### What You See on Screen:
-The central operations screen displaying:
-* **Active Network Health:** Node anomaly metrics across campus buildings.
-* **Live Incident Feed:** Stream of active tickets, severity distribution, and dispatch actions.
-* **Real-time WebSocket Indicator:** Green status badge showing an active link to the Gateway event aggregator.
+#### 🖥️ What You See on the Screen:
+* Signing in as `admin@example.edu` unlocks the **Admin Operations Center**.
+* Live counters showing active network anomalies across campus buildings.
+* A live stream of incoming complaints and automated dispatch suggestions.
+* Green WebSocket indicator showing active live connection to the core servers.
 
 ---
 
-### Step 19 & 20: Network Topology & Real-Time Fault Injection Engine
+### Step 19 & 20: Campus Network Map & Chaos Fault Injection
 
 ![Network Topology View](screenshots/19_admin_network_topology.png)
-*(Above: 97-node campus topology graph categorized by building switches and access points)*
+*(Above: Hierarchical tree showing 97 campus network devices from Core Routers to Wi-Fi APs)*
 
 ![Fault Injection Panel](screenshots/20_admin_fault_injection.png)
-*(Above: Admin control buttons to inject simulated failures into the live network)*
+*(Above: Interactive buttons to break simulated routers and test how the system reacts)*
 
-#### What You See on Screen:
-* A hierarchical graph representing **97 network nodes**: Core Routers (`CORE-01`, `RTR-01`) $\to$ Distribution Switches $\to$ Building Switches (`SW-AB2-01`) $\to$ Access Points (`AP-AB2-301`).
-* **Fault Injection Controls:** Admins can trigger simulated real-world failures:
-  1. **Demand Surge:** Simulates a massive crowd entering an auditorium.
-  2. **AP Degradation:** Injects 80% packet loss on a specific access point.
-  3. **Switch Flap:** Simulates a loose fiber cable intermittently disconnecting an entire building.
-
-#### How It Uses CNT:
-* **Hierarchical Network Design (Cisco 3-Tier Model):** Demonstrates the Core, Distribution, and Access layer topology standard in modern enterprise campuses.
-* **Chaos Engineering:** Allows validation of network resilience and localizer accuracy under controlled synthetic faults.
+#### 🖥️ What You See on the Screen:
+* **The Network Map:** Displays the physical layout of the campus:
+  * **Core Routers:** The central brains connected to the internet.
+  * **Building Switches:** The main network hubs inside each building (Academic Block 1, Academic Block 2, Science Block, Library, Hostels).
+  * **Access Points (APs):** The Wi-Fi boxes on every floor.
+* **Chaos Testing Buttons:** Allows teachers or engineers to test the system by deliberately injecting problems:
+  * **Demand Surge:** Simulates 2,000 students gathering in the auditorium for a festival.
+  * **AP Degradation:** Injects 80% packet drop on a single Wi-Fi router.
+  * **Switch Flap:** Simulates a loose cable cutting off an entire building.
 
 ---
 
-### Step 21: Bayesian Fault Localizer in Action
+### Step 21: The Bayesian Network Doctor in Action
 
 ![Bayesian Localizer Demo](screenshots/21_admin_incident_demo_bayesian.png)
 
-#### What You See on Screen:
-The live demonstration of the **M1 Fault Localizer**:
-* A simulated incident is fed into the engine (e.g. 14 complaints from Academic Block 2, floor 3).
-* The engine computes the **Calibrated Posterior Probability** over all 97 candidate nodes.
-* The bar chart immediately flags `AP-AB2-301` as the primary suspect with **94.2% probability**.
+#### 🖥️ What You See on the Screen:
+* When a failure happens (e.g., students in Academic Block 2 start complaining), the admin clicks **Run Localizer**.
+* The AI analyzes the clues and outputs a probability bar chart across all 97 devices.
+* It immediately points to **`AP-AB2-301`** with **94.2% probability**!
 
-#### How It Uses ML (Bayesian Sensor Fusion):
-The model evaluates the log-likelihood across three distinct evidence streams:
-$$\ln P(H = n \mid \text{data}) = \ln P(H=n) + \ln P(d_R \mid n) + \ln P(d_T \mid n) + \ln P(d_N \mid n) - \ln Z$$
-
-Where:
-* $d_R$: Student ticket spatial density in node $n$'s coverage zone.
-* $d_T$: Continuous anomaly telemetry from SNMP-like polling.
-* $d_N$: Graph adjacency (propagating complaints up to parent switches).
-* $Z$: Normalization constant across all 97 hypotheses.
+#### 🤖 The Machine Learning Secret (Bayesian Inference Explained Simply):
+Think of this like a doctor diagnosing an illness:
+1. **Symptom 1 (Human complaints):** 14 students in AB2 filed tickets saying Wi-Fi is broken.
+2. **Symptom 2 (Network map):** The parent switch `SW-AB2-01` is working fine, so the whole building isn't down — it's just one room.
+3. **Symptom 3 (Telemetry):** Router `AP-AB2-301` is acting dead.
+The Bayesian formula multiplies these clues together to conclude: *"There is a 94.2% chance that `AP-AB2-301` is the broken device!"*
 
 ---
 
-### Step 22: Conformal Prediction Sets & Guaranteed Uncertainty Bounds
+### Step 22: Conformal Prediction — The "Guaranteed Suspect Box"
 
 ![Conformal Prediction Sets](screenshots/22_admin_conformal_prediction_set.png)
 
-#### What You See on Screen:
-* Rather than outputting just one guess, the system outputs a **Prediction Set**:
-  $$\text{Suspect Set } C_{\alpha} = \{\text{AP-AB2-301}, \text{SW-AB2-01}\}$$
-* It displays an explicit **90% Confidence Guarantee** ($\alpha = 0.10$).
+#### 🖥️ What You See on the Screen:
+* Instead of just guessing one single device and hoping it's right, the AI provides a **Prediction Set**:
+  $$\text{Suspect Set} = \{\text{AP-AB2-301}, \text{SW-AB2-01}\}$$
+* It gives an explicit **90% Mathematical Guarantee**!
 
-#### How It Uses ML (Conformal Prediction):
-* In critical infrastructure, point predictions (guessing 1 single device) are dangerous because replacing the wrong device wastes hours.
-* Using **Least Ambiguous Classifier (LAC)** conformal calibration on holdout scenarios, the engine determines the smallest set of nodes that statistically guarantees containing the true root-cause node with $1 - \alpha$ probability.
+#### 🤖 The Machine Learning Secret (Conformal Prediction Explained Simply):
+In the real world, if an AI is only 51% sure, sending a technician to climb a ladder and replace the wrong router wastes hours of time. **Conformal prediction** guarantees that 90% of the time, the true broken device is inside this small suspect list. It gives network operators confidence before they send a repair crew.
 
 ---
 
-### Step 23: Informative Missingness — The Core Research Breakthrough
+### Step 23: Informative Missingness — The Silent Router Clue
 
 ![Informative Missingness Explanation](screenshots/23_admin_informative_missingness_explanation.png)
 
-#### What You See on Screen:
-The mathematical explanation card rendered directly inside the application:
-> *"When AP-AB2-301 failed, telemetry stopped completely. Baseline telemetry-only systems scored the node as 0.0 (ignoring it). CampusConnect v2 treats silence as active evidence of failure: $P(\text{silent} \mid \text{failed}) = 0.95$."*
+#### 🖥️ What You See on the Screen:
+An explanation card highlighting our core research breakthrough:
+> *"When `AP-AB2-301` died, it sent zero telemetry packets. Traditional monitoring systems saw no data and assumed nothing was wrong (0.0 score). CampusConnect v2 knows that **silence is proof of failure**."*
 
-#### How It Uses CNT & ML (Why This Is a Major Research Result):
-In traditional statistics, missing data is assumed to be **Missing Completely at Random (MCAR)**. In real campus networks, hardware failure causes **Missing Not at Random (MNAR)**:
-* When an Access Point crashes, its telemetry port dies.
-* Baseline tools (L-B1) that rely solely on telemetry drop to **0.0% accuracy** at $\ge 20\%$ blind nodes because they receive no data.
-* CampusConnect v2's fused model (**L-F**) achieves **46.3% to 76.2% accuracy**, delivering a **+37 to +46 percentage points advantage** over industry baselines!
-
----
-
-## 📊 Summary Comparison: How CampusConnect Uses CNT vs ML
-
-| Feature | Primary Domain | How CNT Is Applied | How ML Is Applied |
-|---|---|---|---|
-| **Student Auth** | CNT / Security | TLS/HTTPS, stateless JWTs, REST over TCP | None (Cryptographic hashing) |
-| **Class Chat & Alerts** | CNT / Real-Time | WebSockets, Socket.io room multiplexing | None |
-| **Academics Resources** | CNT / Web | HTTP Range requests, TCP Reno/Cubic video streaming | Content recommendation |
-| **Campus AI Assistant** | ML / NLP | Standard HTTP JSON transport | Markdown RAG, Vector embeddings, Guardrails |
-| **Gilbert–Elliott Simulator** | CNT | 2-state Markov chain, Spaced UDP copies, Cancel-on-ACK | Stochastic simulation |
-| **RFC 6298 RTO Race** | CNT | Jacobson's EWMA $SRTT / RTTVAR$, Exponential backoff | Compared with Q-learning adaptive timer |
-| **Anti-Replay Window** | CNT / Security | RFC 4303 64-bit sliding bitmask, Monotonic sequence IDs | None ($O(1)$ bitwise operations) |
-| **Protocol v2 Receiver** | CNT / Security | HMAC-SHA256, RFC 8785 Canonical JSON, Length-prefixed TCP | None (Protocol engineering) |
-| **M1 Fault Localizer** | CNT + ML | Graph topology mapping, SNMP telemetry, Zone routing | Bayesian Sensor Fusion, Maximum a Posteriori |
-| **Uncertainty Sets** | ML | Network node hypothesis space | Split-Conformal Prediction, LAC non-conformity |
-| **Informative Missingness** | CNT + ML | Diagnosing silent access points & severed links | MNAR probabilistic modeling, Log-likelihood weighting |
+#### 📡 & 🤖 The Core Research Breakthrough Explained Simply:
+* If a student doesn't submit homework, maybe they forgot (random missing data).
+* But if a router that is supposed to beep every 5 seconds suddenly stops beeping at the exact moment students start complaining about Wi-Fi, **its silence is not an accident — it is dead!**
+* **The Result:** When routers completely die, standard industry tools drop to **0% accuracy**. CampusConnect v2's smart model maintains **46.3% to 76.2% accuracy**, beating traditional tools by **over 34 percentage points**!
 
 ---
 
-## 🎓 Teacher / Examiner Presentation Cheat Sheet
+## 🎯 Quick Summary Table: What Every Feature Does
 
-If an examiner or teacher asks you key questions during a viva or presentation, here are the direct answers:
+| Screen / Feature | What It Does for the User | The Smart Tech Behind It |
+|---|---|---|
+| **Login & Register** | Signs in students & staff securely | HTTPS, JWT tokens, BCrypt passwords |
+| **Student Dashboard** | Central home screen with counters | Live WebSockets for instant updates |
+| **Academics Hub (8 CS Subjects)** | Complete study materials for all core subjects | Fast compressed JSON over HTTP/2 |
+| **Course Syllabus** | 8 modular units for exam prep | Clear curriculum breakdown |
+| **Timetable** | Shows lecture times and classroom codes | Classrooms link to Wi-Fi router IDs |
+| **Resources & Playlists** | YouTube lectures and PDF textbooks | HTTP video chunk streaming (TCP flow control) |
+| **Class Discussion Chat** | Live Q&A chatroom for each course | Real-time WebSocket room channels |
+| **Helpdesk Tickets** | Submit and track complaints | Spatial location tagging ($d_R$ evidence) |
+| **Campus AI Assistant** | Answers campus questions accurately | RAG (Retrieval-Augmented Generation) |
+| **Gilbert–Elliott Simulator** | Visualizes Wi-Fi glitches and packet drops | 2-state Markov model, Spaced UDP copies |
+| **Adaptive Timer Race** | Shows how smart timers stop lag | RFC 6298 EWMA math vs dumb fixed timers |
+| **Anti-Replay Window** | Prevents hackers from replaying messages | RFC 4303 64-bit sliding bitmask ($O(1)$) |
+| **Admin Overview & Topology** | Map of all 97 campus routers & switches | Cisco 3-tier hierarchical network design |
+| **Fault Injection** | Lets admins test broken routers | Chaos engineering simulation |
+| **Bayesian Fault Localizer** | Finds the broken router from clues | Bayesian Probability & Sensor Fusion |
+| **Conformal Prediction Sets** | Gives guaranteed suspect lists | 90% confidence uncertainty quantification |
+| **Informative Missingness** | Uses router silence as proof of a crash | Missing Not at Random (MNAR) AI modeling |
 
-### Q1: "What is the main contribution of your project?"
-> *"Our main contribution is solving the **Silent Node Problem** on campus networks. When an access point crashes, it cannot report its own failure, causing traditional telemetry-only monitoring tools to drop to 0% accuracy. CampusConnect v2 treats **silence as probabilistic evidence** (Informative Missingness) and fuses student helpdesk complaints with campus graph topology using Bayesian inference, achieving a +34 to +46 percentage points accuracy gain over standard baselines."*
+---
 
-### Q2: "What is Protocol v2 and why did you build it?"
-> *"Protocol v2 is an application-layer datagram protocol designed for emergency campus alerts over lossy Wi-Fi. It uses **RFC 8785 Canonical JSON** and **HMAC-SHA256** for tamper-proof signatures, an **RFC 4303 64-bit sliding bitmask** for anti-replay protection, and **scheduled spaced UDP copies with cancel-on-ACK** to escape correlated burst loss modeled by the Gilbert–Elliott Markov chain."*
+## 🎓 30-Second Viva Pitch for Teachers & Evaluators
 
-### Q3: "What Machine Learning models did you use?"
-> *"Rather than using a black-box deep learning model that cannot be explained, we used a **Bayesian Graphical Model** that fuses ticket complaint density ($d_R$), telemetry anomaly scores ($d_T$), and topology adjacency ($d_N$). We also implemented **Split-Conformal Prediction** with the Least Ambiguous Classifier (LAC) criterion to provide network operators with guaranteed 90% confidence sets for suspect devices."*
-
-### Q4: "Is this deployed and testable?"
-> *"Yes! The frontend is deployed live on **GitHub Pages** ([007arnav007.github.io/CampusConnect](https://007arnav007.github.io/CampusConnect/)), all 76 unit and integration tests across 6 modules pass cleanly, and the complete codebase is open-sourced on GitHub ([007Arnav007/CampusConnect](https://github.com/007Arnav007/CampusConnect))."*
+> *"CampusConnect v2 is a full-stack campus platform that combines a complete student academic portal (with 8 CS subjects, syllabus, timetable, video resources, and live chat) with an intelligent network fault localizer.*
+>
+> *Our main networking breakthrough is solving the **Silent Node Problem**: when a Wi-Fi router crashes on campus, it cannot report its own death. By treating router silence as active evidence (**Informative Missingness**) and fusing student helpdesk tickets with the campus network graph, our system pinpoints broken routers with up to **+37 percentage points higher accuracy** than standard network monitoring tools."*
 
 ---
 
 *CampusConnect v2 — Computer Networks & Telecommunications (CNT501)*  
-**Live Site:** [https://007arnav007.github.io/CampusConnect/](https://007arnav007.github.io/CampusConnect/) | **GitHub:** [007Arnav007/CampusConnect](https://github.com/007Arnav007/CampusConnect)
+**Live Site:** [https://007arnav007.github.io/CampusConnect/](https://007arnav007.github.io/CampusConnect/)  
+**GitHub Repository:** [007Arnav007/CampusConnect](https://github.com/007Arnav007/CampusConnect)
 
